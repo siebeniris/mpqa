@@ -1,8 +1,5 @@
 package edu.pitt.mpqa.node
 
-import edu.pitt.mpqa.node.Span
-
-
 /**
  * Represents an agent mention.
  * @param identifier The ID of the agent.

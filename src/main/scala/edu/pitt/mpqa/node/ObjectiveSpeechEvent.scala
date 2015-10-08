@@ -1,6 +1,5 @@
 package edu.pitt.mpqa.node
 
-import edu.pitt.mpqa.node.Span
 import edu.pitt.mpqa.option.Insubstantiality
 
 /**

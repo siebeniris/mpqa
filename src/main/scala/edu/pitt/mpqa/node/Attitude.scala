@@ -1,7 +1,6 @@
 package edu.pitt.mpqa.node
 
-import edu.pitt.mpqa.node.Span
-import edu.pitt.mpqa.option.{Polarity, Intensity, AttitudeType}
+import edu.pitt.mpqa.option.{AttitudeType, Intensity, Polarity}
 
 import scala.collection.JavaConverters._
 

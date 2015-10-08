@@ -1,7 +1,5 @@
 package edu.pitt.mpqa.node
 
-import edu.pitt.mpqa.node.Span
-
 import scala.collection.JavaConverters._
 
 /**

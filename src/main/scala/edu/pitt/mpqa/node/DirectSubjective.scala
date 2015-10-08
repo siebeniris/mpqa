@@ -1,7 +1,6 @@
 package edu.pitt.mpqa.node
 
-import edu.pitt.mpqa.node.Span
-import edu.pitt.mpqa.option.{Insubstantiality, Intensity, ExpressionIntensity}
+import edu.pitt.mpqa.option.{ExpressionIntensity, Insubstantiality, Intensity}
 
 import scala.collection.JavaConverters._
 

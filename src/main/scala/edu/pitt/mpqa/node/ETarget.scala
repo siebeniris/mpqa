@@ -1,7 +1,6 @@
 package edu.pitt.mpqa.node
 
-import edu.pitt.mpqa.node.Span
-import edu.pitt.mpqa.option.{ReferredInSpanOption, NegatedOption, ETargetType}
+import edu.pitt.mpqa.option.{ETargetType, NegatedOption, ReferredInSpanOption}
 
 /**
  * Represents an eTarget.
