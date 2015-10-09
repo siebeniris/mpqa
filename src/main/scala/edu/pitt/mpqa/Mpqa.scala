@@ -1,8 +1,11 @@
 package edu.pitt.mpqa
 
 import java.util
+import java.util.Scanner
+import java.util.zip.ZipInputStream
 import edu.pitt.mpqa.option._
 import edu.pitt.mpqa.node._
+import me.yuhuan.util.StandardStrings
 import me.yuhuan.util.io._
 import net.liftweb.json.JsonAST.JString
 import net.liftweb.json._
@@ -10,16 +13,53 @@ import net.liftweb.json._
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
 import scala.xml.XML
+import scala.collection.mutable
+
+/**
+ * The engine of the corpus.
+ *
+ * An important reason why this engine is needed is that, to save memory usage,
+ * the text span property in many classes like
+ * [[Sentence Sentence]],
+ * [[ETarget ETarget]], and
+ * [[STarget STarget]]
+ * use a [[Span TextSpan]] object to store only
+ * the start and end character positions. The actual text strings can be
+ * accessed in this object using the
+ * [[edu.pitt.nlp.data.mpqa.Mpqa#view view]] method.
+ *
+ */
+object Mpqa {
+
+  /**
+   * A mapping from document ID to the raw text of the document.
+   */
+  private[mpqa] val docRawTexts = loadZippedDocs("/raw.zip")
+
+  /**
+   * A mapping from document ID to its JSON file.
+   */
+  private[mpqa] val docJsonTexts = loadZippedDocs("/json.zip")
 
 
 
-class Mpqa private(val documents: Seq[Document]) {
+  // Parse the json files as a sequence of MPQA Documents
+  val documents: Seq[Document] = docJsonTexts.values.map(d ⇒ parseJsonOfDocument(d)).toSeq
 
-  //region Java
+
+  /**
+   * Views the actual text given a text span.
+   * Provides a way to reveal the real text that a `Span` refers to.
+   * @param docName The document name.
+   * @param span The span to be decoded.
+   * @return The actual text of the given text span.
+   */
+  private[mpqa] def view(docName: String, span: Span): String = {
+    docRawTexts(docName).substring(span.startPos, span.endPos)
+  }
+
+  //region Java Compatibility Methods
   def getDocuments: util.List[Document] = documents.asJava
-  //endregion
-
-  //regions Java Compatibility Methods
   def getAllSentences = allSentences.asJava
   def getAllSubjObjs = allSubjObjs.asJava
   def getAllDirectSubjectives = allDirectSubjectives.asJava
@@ -30,6 +70,9 @@ class Mpqa private(val documents: Seq[Document]) {
   def getAllTargetFrames = allTargetFrames.asJava
   //endregion
 
+
+
+  //region API Methods for Users
 
   def allSentences = documents.flatMap(_.sentences)
 
@@ -70,66 +113,48 @@ class Mpqa private(val documents: Seq[Document]) {
 
   def allTargetFrames = {
     allDirectSubjectives.flatMap(_.attitudes).map(_.targetFrame).filter(_ != null) ++
-    allExpressiveSubjectivities.map(_.targetFrame).filter(_ != null)
+      allExpressiveSubjectivities.map(_.targetFrame).filter(_ != null)
   }
 
-}
-
-/**
- * The engine of the corpus.
- *
- * An important reason why this engine is needed is that, to save memory usage,
- * the text span property in many classes like
- * [[Sentence Sentence]],
- * [[ETarget ETarget]], and
- * [[STarget STarget]]
- * use a [[Span TextSpan]] object to store only
- * the start and end character positions. The actual text strings can be
- * accessed in this object using the
- * [[edu.pitt.nlp.data.mpqa.Mpqa#view view]] method.
- *
- */
-
-object Mpqa {
-
-  //regions Java Compatibility Methods
-  def createFromConfig(pathToConfigXml: String): Mpqa = apply(pathToConfigXml)
   //endregion
 
-  /**
-   * A mapping from document ID to the raw text of the document.
-   */
-  val docRawTexts = scala.collection.mutable.HashMap[String, String]()
+  //region Utility Functions
+
 
   /**
-   * A mapping from document ID to its JSON file.
+   * Loads the JSON files. The JSON files will be stored in `docJsonTexts`, in which
+   * each pair has the document ID as the key, and the JSON file content as the value.   *
+   *
+   * @param pathToJsonDir The path to the JSON file directory.
+   *                      This is usually the path to the `clean_anns/` directory.
    */
-  val docJsonTexts = scala.collection.mutable.HashMap[String, String]()
+  private def loadZippedDocs(resourcePath: String): mutable.HashMap[String, String] = {
 
-  /**
-   * Loads the MPQA corpus by a configuration file.
-   *
-   * This method loads the raw documents and JSON files pointed to by the configuration file first,
-   * and then parses each JSON file (which corresponds to a document in MPQA) as a
-   * [[Document Document]] object.
-   *
-   * @param pathToConfigXml The path to the configuration file.
-   * @return An array of documents.
-   */
-  def apply(pathToConfigXml: String): Mpqa = {
-    val configXml = XML.loadFile(pathToConfigXml)
-    val pathToRawTextDir = (configXml \\ "Paths" \\ "RawDocsDir").text
-    val pathToJsonDir = (configXml \\ "Paths" \\ "JsonDocsDir").text
-    this(pathToJsonDir, pathToRawTextDir)
+    val docs = scala.collection.mutable.HashMap[String, String]()
+
+    val inputStream = this.getClass.getResourceAsStream(resourcePath)
+    val zipInputStream = new ZipInputStream(inputStream)
+    var curZipEntry = zipInputStream.getNextEntry
+    while (curZipEntry != null) {
+      if (!curZipEntry.isDirectory) {
+        val zipEntryName = curZipEntry.getName
+        val parts = zipEntryName.split('/')
+        val docName = parts.takeRight(2).mkString("/")
+        val sb = new StringBuilder()
+        val scanner = new Scanner(zipInputStream, "UTF-8")
+        while (scanner.hasNextLine) {
+          sb append scanner.nextLine()
+          sb append StandardStrings.NewLine
+        }
+        docs(docName) = sb.toString()
+      }
+      curZipEntry = zipInputStream.getNextEntry
+    }
+    docs
   }
 
-  def apply(pathToJsonDir: String, pathToRawTextDir: String) = {
-    loadDocRawTexts(pathToRawTextDir)
-    loadDocJsonTexts(pathToJsonDir)
+  //endregion
 
-    // Parse each JSON file to a Document object.
-    new Mpqa(docJsonTexts.values.map(d ⇒ parseJsonOfDocument(d)).toSeq)
-  }
 
 
   //region Parsing Methods for Option Values
@@ -514,52 +539,4 @@ object Mpqa {
 
   //endregion
 
-  /**
-   * Loads the raw document text files. The text files will be stored in the a map called
-   * `docRawTexts`, in which each pair has the document id as the key, and the text content
-   * as the value.
-   * @param pathToRawTextDir The path to the raw text file directory.
-   *                         In a standard MPQA release, this is usually the path to the
-   *                         `doc/` directory.
-   */
-  private def loadDocRawTexts(pathToRawTextDir: String) = {
-    val dateDirs = Directory.allSubdirectories(pathToRawTextDir)
-    for (dateDir ← dateDirs) {
-      val documents = dateDir.listFiles
-      for (d ← documents) {
-        val docName = dateDir.getName + "/" + d.getName
-        val docContent = TextFile.readAll(d.getAbsolutePath)
-        docRawTexts(docName) = docContent
-      }
-    }
-  }
-
-  /**
-   * Loads the JSON files. The JSON files will be stored in `docJsonTexts`, in which
-   * each pair has the document ID as the key, and the JSON file content as the value.   *
-   *
-   * @param pathToJsonDir The path to the JSON file directory.
-   *                      This is usually the path to the `clean_anns/` directory.
-   */
-  private def loadDocJsonTexts(pathToJsonDir: String) = {
-    val dateDirs = Directory.allSubdirectories(pathToJsonDir)
-    for (dateDir ← dateDirs) {
-      val documents = dateDir.listFiles
-      for (d ← documents) {
-        val docName = dateDir.getName + "/" + d.getName
-        val docContent = TextFile.readAll(d.getAbsolutePath)
-        docJsonTexts(docName) = docContent
-      }
-    }
-  }
-
-  /**
-   * Views the actual text given a text span.
-   * @param docName The document name.
-   * @param span The span to be decoded.
-   * @return The actual text of the given text span.
-   */
-  def view(docName: String, span: Span): String = {
-    docRawTexts(docName).substring(span.startPos, span.endPos)
-  }
 }
