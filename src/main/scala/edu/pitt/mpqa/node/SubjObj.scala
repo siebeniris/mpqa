@@ -15,9 +15,6 @@ import scala.collection.JavaConverters._
  *
  */
 trait SubjObj extends Annotation {
-  /**
-   * The sentence to which this subjObj belongs to.
-   */
   def sentence: Sentence
   def span: Span
   def nestedSource: Seq[String]
@@ -25,15 +22,7 @@ trait SubjObj extends Annotation {
 
   def immediateSourceMention = nestedSource.last
 
-  //region Java Compatibility Methods
-  def getSentence = sentence
-  def getSpan = span
-  def getNestedSource: java.util.List[String] = nestedSource.asJava
-  def getInsubstantiality = insubstantiality
-  def getImmediateSourceMention = immediateSourceMention
-  //endregion
-
   //region Conforming to TreeNode[Annotation]
-  override def parent: Annotation = ???
+  override def parent: Annotation = sentence
   //endregion
 }

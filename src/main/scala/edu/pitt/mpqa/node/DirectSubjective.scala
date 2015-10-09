@@ -19,9 +19,12 @@ import scala.collection.JavaConverters._
  * @param attitudes A collection of attitude annotations in this DS.
  * @param expressionIntensity The intensity of the direct private state expression or
  *                            the speech event itself in this DS annotation.
+ *                            [[edu.pitt.mpqa.option.ExpressionIntensity ExpressionIntensity]] for possible values.
  * @param intensity The overall intensity of the private state being expressed, considering this
  *                  DS and everything inside its scope.
+ *                  See [[edu.pitt.mpqa.option.Intensity Intensity]] for possible values.
  * @param insubstantiality (TODO: What exactly are the criteria for a DS to be insubstantial? )
+ *                         See [[edu.pitt.mpqa.option.Insubstantiality Insubstantiality]] for possible values.
  *
  */
 class DirectSubjective(val sentence: Sentence,
@@ -33,7 +36,7 @@ class DirectSubjective(val sentence: Sentence,
                        val insubstantiality: Insubstantiality) extends SubjObj {
 
   /**
-   * Gets the actual text of the span of this DS annotation.
+   * The actual text of the span of this DS annotation.
    * Newline characters are replaced by spaces.
    */
   def spanStr: String = span.str(sentence.document.id).replace('\n', ' ')
@@ -42,10 +45,51 @@ class DirectSubjective(val sentence: Sentence,
 
 
   //region Java Compatibility Methods
+  /**
+   * Gets the sentence that this DS belongs to.
+   */
+  def getSentence = sentence
+
+  /**
+   * Gets the text span of this DS annotation.
+   */
+  def getSpan = span
+
+  /**
+   * Gets the nested source of this DS.
+   */
+  def getNestedSource: java.util.List[String] = nestedSource.asJava
+
+  /**
+   * Gets a collection of attitude annotations in this DS.
+   */
   def getAttitudes: java.util.List[Attitude] = attitudes.asJava
-  def getSpanStr = spanStr
-  def getIntensity = intensity
+
+  /**
+   * Gets the intensity of the direct private state expression or
+   * the speech event itself in this DS annotation.
+   * See [[edu.pitt.mpqa.option.ExpressionIntensity ExpressionIntensity]] for possible values.
+   */
   def getExpressionIntensity = expressionIntensity
+
+  /**
+   * Gets the overall intensity of the private state being expressed, considering this
+   * DS and everything inside its scope.
+   * See [[edu.pitt.mpqa.option.Intensity Intensity]] for possible values.
+   */
+  def getIntensity = intensity
+
+  /**
+   * (TODO: What exactly are the criteria for a DS to be insubstantial? )
+   * See [[edu.pitt.mpqa.option.Insubstantiality Insubstantiality]] for possible values.
+   */
+  def getInsubstantiality = insubstantiality
+
+  /**
+   * Gets the actual text of the span of this DS annotation.
+   * Newline characters are replaced by spaces.
+   */
+  def getSpanStr = spanStr
   //endregion
 
   //region Conforming to Annotation

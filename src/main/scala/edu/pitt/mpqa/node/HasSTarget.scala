@@ -6,11 +6,10 @@ package edu.pitt.mpqa.node
  * An sTarget's parent can be either ObjectiveSpeechEvent or TargetFrame.
  */
 trait HasSTarget extends Annotation {
+  /**
+   * The sTargets contained in this annotation.
+   */
   def sTargets: Seq[STarget]
-
-  //region Java Compatibility Methods
-  def getSTargets = sTargets
-  //endregion
 
   //region Conforming to Annotation
   override def children: Seq[Annotation] = sTargets

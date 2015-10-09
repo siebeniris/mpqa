@@ -304,7 +304,7 @@ object Mpqa {
       val sTarget = new STarget(parent, id, span, new ArrayBuffer[ETarget], uncertainty)
 
       parent match {
-        case tf: TargetFrame ⇒ sTarget.eTargets = (json \ "eTargets").children.map(e ⇒ parseETarget(e, tf))
+        case tf: TargetFrame ⇒ sTarget.eTargets = (json \ "eTargets").children.map(e ⇒ parseETarget(e, sTarget))
         case _ ⇒ { }
       }
 
@@ -313,7 +313,7 @@ object Mpqa {
     else null
   }
 
-  private def parseETarget(json: JValue, parent: TargetFrame): ETarget = {
+  private def parseETarget(json: JValue, parent: HasETarget): ETarget = {
     val eventOrEntity: ETargetType = json \ "eventOrEntity" match {
       case JString(s) ⇒ {
         if (s == "event") ETargetType.Event

@@ -25,6 +25,8 @@ object LoadingAllSentiments {
       if attitude.attitudeType == AttitudeType.Sentiment
     } yield attitude
 
+
+    val bp = 0
   }
 
 }

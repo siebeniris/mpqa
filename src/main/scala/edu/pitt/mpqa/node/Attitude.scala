@@ -22,8 +22,11 @@ import scala.collection.JavaConverters._
  * @param nestedSource The nested source of this attitude.
  * @param span The text span of this attitude annotation.
  * @param attitudeType The type of this attitude.
- * @param intensity TODO:
- * @param polarity TODO:
+ *                     See [[edu.pitt.mpqa.option.AttitudeType AttitudeType]] for possible values.
+ * @param intensity TODO: What is this?
+ *                  See [[edu.pitt.mpqa.option.Intensity Intensity]] for possible values.
+ * @param polarity TODO: What is this?
+ *                 See [[edu.pitt.mpqa.option.Polarity Polarity]] for possible values.
  * @param targetFrame The target frame of this attitude.
  *
  */
@@ -37,22 +40,71 @@ class Attitude(val parent: SubjObj,
                var targetFrame: TargetFrame) extends HasTargetFrame {
 
   /**
-   * Gets the actual text of the span of this attitude annotation.
+   * The actual text of the span of this attitude annotation.
    * Newline characters are replaced by spaces.
    */
   def spanStr: String = span.str(parent.sentence.document.id).replace('\n', ' ')
 
+  /**
+   * The sentence in which this attitude is found.
+   */
   def sentence = parent.sentence
 
   //region Java Compatibility Methods
+  /**
+   * Gets the [[DirectSubjective DirectSubjective]]
+   * that holds the private state this attitude represents.
+   */
   def getParent = parent
+
+  /**
+   * Gets the ID of this attitude annotation.
+   */
   def getId = id
+
+  /**
+   * Gets the nested source of this attitude.
+   */
   def getNestedSource: java.util.List[String] = nestedSource.asJava
+
+  /**
+   * Gets the text span of this attitude annotation.
+   */
   def getSpan = span
-  def getSpanStr = spanStr
+
+  /**
+   * Gets the type of this attitude.
+   * See [[edu.pitt.mpqa.option.AttitudeType AttitudeType]] for possible values.
+   */
   def getAttitudeType = attitudeType
+
+  /**
+   * TODO: What is this?
+   * See [[edu.pitt.mpqa.option.Intensity Intensity]] for possible values.
+   */
   def getIntensity = intensity
+
+  /**
+   * TODO: What is this?
+   * See [[edu.pitt.mpqa.option.Polarity Polarity]] for possible values.
+   */
   def getPolarity = polarity
+
+  /**
+   * Gets the target frame of this attitude.
+   */
+  def getTargetFrame = targetFrame
+
+  /**
+   * Gets the actual text of the span of this attitude annotation.
+   * Newline characters are replaced by spaces.
+   */
+  def getSpanStr = spanStr
+
+  /**
+   * Gets the sentence in which this attitude is found.
+   */
+  def getSentence = sentence
   //endregion
 
   override def toString = spanStr

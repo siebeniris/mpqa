@@ -16,7 +16,7 @@ class Sentence(val document: Document,
                var subjObjs: Seq[SubjObj]) extends Annotation {
 
   /**
-   * Gets the text string of the sentence.
+   * The text string of the sentence.
    * Newline characters are replaced with spaces.
    */
   def spanStr: String = span.str(document.id).replace('\n', ' ')
@@ -24,10 +24,27 @@ class Sentence(val document: Document,
   override def toString = spanStr
 
   //region Java Compatibility Methods
+  /**
+   * Gets the document that the sentence belongs to.
+   */
   def getDocument = document
+
+  /**
+   * Gets the text span of the sentence.
+   */
   def getSpan = span
-  def getSpanStr = spanStr
+
+  /**
+   * Gets the subjectivity and objectivity annotations in this sentence.
+   */
   def getSubjObjs: java.util.List[SubjObj] = subjObjs.asJava
+
+  /**
+   * Gets the text string of the sentence.
+   * Newline characters are replaced with spaces.
+   */
+  def getSpanStr = spanStr
+
   //endregion
 
   //region conforming to Annotation

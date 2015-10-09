@@ -14,6 +14,8 @@ import edu.pitt.mpqa.Mpqa
 case class Span(startPos: Int, endPos: Int) {
   def subsumes(that: Span) = this.startPos > that.startPos && this.endPos < that.endPos
   def length = endPos - startPos
+
+  def getLength = length
 }
 
 

@@ -15,6 +15,11 @@ package edu.pitt.mpqa.node
  *
  */
 trait Annotation {
+  /**
+   * The parent of this annotation.
+   * The parent of a `DirectSubjective` is a sentence. The parent of an `STarget` is `HasSTarget`.
+   */
   def parent: Annotation
   def children: Iterable[Annotation]
+
 }

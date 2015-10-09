@@ -28,35 +28,74 @@ import scala.collection.JavaConverters._
  * @param id The ID of this target frame.
  * @param sTargets The sTargets annotated in MPQA 2.
  *                 Each sTarget will also contain the newly identified eTargets within
- *                 the sTarget in MPQA 3. See `STarget` for details.
- * @param newETargets The eTargets annotated in MPQA 3.
+ *                 the sTarget in MPQA 3. See [[STarget]] for details.
+ * @param newETargets The eTargets annotated in MPQA 3 that are not inside any sTargets.
  */
 class TargetFrame(val parent: HasTargetFrame,
                   val id: String,
                   var sTargets: Seq[STarget],
-                  var newETargets: Seq[ETarget]) extends HasSTarget {
+                  var newETargets: Seq[ETarget]) extends HasSTarget with HasETarget {
 
+
+  /**
+   * All eTargets, both those inside sTargets and those newly annotated.
+   */
+  def eTargets: Seq[ETarget] = oldETargets ++ newETargets
+
+  /**
+   * Only the eTargets inside the sTargets annotated in MPQA 2.
+   */
+  def oldETargets: Seq[ETarget] = sTargets.flatMap(_.eTargets)
+
+  /**
+   * The sentence to which this target frame belongs.
+   */
   def sentence = parent match {
     case att: Attitude ⇒ att.sentence
     case ese: ExpressiveSubjectivity ⇒ ese.sentence
   }
 
-  /**
-   * Gets all eTargets.
-   */
-  def eTargets: Seq[ETarget] = oldETargets ++ newETargets
-
-  /**
-   * Gets only eTargets in MPQA 2.
-   */
-  def oldETargets: Seq[ETarget] = sTargets.flatMap(_.eTargets)
-
   //region Java Compatibility Methods
+  /**
+   * The annotation that this target frame belongs to.
+   * Currently, the only possible types of parent are
+   * [[Attitude Attitude]] and
+   * [[ExpressiveSubjectivity ExpressiveSubjectivity]].
+   */
   def getParent = parent
+
+  /**
+   * Gets the ID of this target frame.
+   */
   def getId = id
+
+  /**
+   * Gets the sTargets annotated in MPQA 2.
+   * Each sTarget will also contain the newly identified eTargets within
+   * the sTarget in MPQA 3. See [[STarget]] for details.
+   */
+  def getSTargets: java.util.List[STarget] = sTargets.asJava
+
+  /**
+   * The eTargets annotated in MPQA 3 that are not inside any sTargets.
+   * @return
+   */
   def getNewETargets: java.util.List[ETarget] = newETargets.asJava
-  def getOldETargets: java.util.List[ETarget] = oldETargets.asJava
+
+  /**
+   * Gets all eTargets, both those inside sTargets and those newly annotated.
+   */
   def getETargets: java.util.List[ETarget] = eTargets.asJava
+
+  /**
+   * Gets only the eTargets inside the sTargets annotated in MPQA 2.
+   */
+  def getOldETargets: java.util.List[ETarget] = oldETargets.asJava
+
+  /**
+   * Gets the sentence to which this target frame belongs.
+   */
+  def getSentence = sentence
   //endregion
 
   override def toString = id

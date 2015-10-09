@@ -13,11 +13,10 @@ package edu.pitt.mpqa.node
  *
  */
 trait HasTargetFrame extends Annotation {
+  /**
+   * The target frame contained in this annotation.
+   */
   def targetFrame: TargetFrame
-
-  //region Java Compatibility Methods
-  def getTargetFrame = targetFrame
-  //endregion
 
   //region Conforming to Annotation
   override def children: Seq[Annotation] = Seq(targetFrame)
