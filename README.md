@@ -11,16 +11,32 @@ libraryDependencies += "me.yuhuan" %% "mpqa" % "0.0.1-SNAPSHOT"
 ```
 
 ### For Java Users
-Simply add the following lines to your Maven 
+Add the following lines in `<project> ... </project>`:
 
-    <dependency>
-      <groupId> me.yuhuan </groupId>
-      <artifactId> mpqa_2.11</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
+    <repositories>
+        <repository>
+            <id>sonatypeSnapshots</id>
+            <name>Sonatype Snapshots</name>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId> me.yuhuan </groupId>
+            <artifactId> mpqa_2.11</artifactId>
+            <version> 0.0.1-SNAPSHOT </version>
+        </dependency>
+    </dependencies>
 
 ## Documentation
-For ScalaDoc (the machine-generated documentation for classes and methods), please [click here]().
+For ScalaDoc (the machine-generated documentation for classes and methods), please [click here](http://people.cs.pitt.edu/~yuhuan/mpqa-doc).
 
 For the human-written explanation of structure design and tutorials on how to use the API, please [click here](https://github.com/jyuhuan/mpqa/wiki).
 
