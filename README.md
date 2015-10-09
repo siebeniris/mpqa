@@ -11,7 +11,7 @@ libraryDependencies += "me.yuhuan" %% "mpqa" % "0.0.1-SNAPSHOT"
 ```
 
 ### For Java Users
-Add the following lines in `<project> ... </project>` of your `pom.xml` file:
+First, add the following lines in `<project> ... </project>` of your `pom.xml` file:
 
     <repositories>
         <repository>
@@ -27,13 +27,15 @@ Add the following lines in `<project> ... </project>` of your `pom.xml` file:
         </repository>
     </repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId> me.yuhuan </groupId>
-            <artifactId> mpqa_2.11</artifactId>
-            <version> 0.0.1-SNAPSHOT </version>
-        </dependency>
-    </dependencies>
+
+Then, add the following lines in `<dependencies> ... </dependencies>` of your `pom.xml` file:
+
+    <dependency>
+        <groupId> me.yuhuan </groupId>
+        <artifactId> mpqa_2.11</artifactId>
+        <version> 0.0.1-SNAPSHOT </version>
+    </dependency>
+
 
 ## Documentation
 For ScalaDoc (the machine-generated documentation for classes and methods), please [click here](http://people.cs.pitt.edu/~yuhuan/mpqa-doc/#edu.pitt.mpqa.node.Document).
