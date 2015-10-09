@@ -11,7 +11,7 @@ libraryDependencies += "me.yuhuan" %% "mpqa" % "0.0.1-SNAPSHOT"
 ```
 
 ### For Java Users
-Add the following lines in `<project> ... </project>`:
+Add the following lines in `<project> ... </project>` of your `pom.xml` file:
 
     <repositories>
         <repository>
