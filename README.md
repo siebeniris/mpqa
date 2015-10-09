@@ -36,7 +36,7 @@ Add the following lines in `<project> ... </project>` of your `pom.xml` file:
     </dependencies>
 
 ## Documentation
-For ScalaDoc (the machine-generated documentation for classes and methods), please [click here](http://people.cs.pitt.edu/~yuhuan/mpqa-doc).
+For ScalaDoc (the machine-generated documentation for classes and methods), please [click here](http://people.cs.pitt.edu/~yuhuan/mpqa-doc/#edu.pitt.mpqa.node.Document).
 
 For the human-written explanation of structure design and tutorials on how to use the API, please [click here](https://github.com/jyuhuan/mpqa/wiki).
 
