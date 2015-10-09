@@ -7,17 +7,17 @@ import scala.collection.JavaConverters._
 /**
  * Represents an attitude of a private state.
  *
- * An `Attitude` is used by a [[DirectSubjective DirectSubjective]]
+ * An `Attitude` is used only by a [[DirectSubjective DirectSubjective]]
  * to represent the private state it contains.
  *
- * In MPQA 2, a various types (TODO: which exactly) of attitudes are annotated with span-based
+ * In MPQA 2, a variety of types of attitudes are annotated with span-based
  * targets. MPQA 3 makes changes only on those attitudes whose type is sentiment in two ways:
  *
- *  - Marks the eTargets in each span-based targets
- *  - Finds additional targets, marks the eTargets of these new targets.
+ *  - Marks the eTargets in each span-based targets, and
+ *  - Finds additional eTargets.
  *
  * @param parent The [[DirectSubjective DirectSubjective]]
- *               that holds the private state that this attitude represents.
+ *               that holds the private state this attitude represents.
  * @param id The ID of this attitude annotation.
  * @param nestedSource The nested source of this attitude.
  * @param span The text span of this attitude annotation.

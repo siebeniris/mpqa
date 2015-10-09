@@ -16,10 +16,9 @@ import scala.collection.JavaConverters._
  *  the `parent` is:
  *
  *   - If the `parent` is an `Attitude` whose type is sentiment,
- *   then both `sTargetsAndETargets` and `newETargets` are valid.
+ *   then both `sTargets` and `newETargets` are valid.
  *   - If the `parent` is an `Attitude` whose type is not sentiment,
- *   then only `sTargetsAndETargets` is valid (the second element of each of its pairs is null).
- *   A convenient method `sTargets` is provided to only return a list of sTargets.
+ *   then only `sTargets` is valid (the second element of each of its pairs is null).
  *   - If the `parent` is an `ExpressiveSubjectivity`, then only the `newETargets` is valid.
  *
  * @param parent The annotation that this target frame belongs to.
@@ -27,11 +26,9 @@ import scala.collection.JavaConverters._
  *               [[Attitude Attitude]] and
  *               [[ExpressiveSubjectivity ExpressiveSubjectivity]].
  * @param id The ID of this target frame.
- * @param sTargetsAndETargets A mapping from sTargets to their extracted eTargets
- *                            in this target frame. The sTargets are those annotated in MPQA 2.
- *                            Each item is a pair of
- *                             - An sTarget
- *                             - A collection of eTargets extracted from the sTarget.
+ * @param sTargets The sTargets annotated in MPQA 2.
+ *                 Each sTarget will also contain the newly identified eTargets within
+ *                 the sTarget in MPQA 3. See `STarget` for details.
  * @param newETargets The eTargets annotated in MPQA 3.
  */
 class TargetFrame(val parent: HasTargetFrame,

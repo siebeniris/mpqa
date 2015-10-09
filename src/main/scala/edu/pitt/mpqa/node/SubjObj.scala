@@ -15,6 +15,9 @@ import scala.collection.JavaConverters._
  *
  */
 trait SubjObj extends Annotation {
+  /**
+   * The sentence to which this subjObj belongs to.
+   */
   def sentence: Sentence
   def span: Span
   def nestedSource: Seq[String]

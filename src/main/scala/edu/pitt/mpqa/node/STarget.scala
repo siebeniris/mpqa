@@ -33,6 +33,9 @@ class STarget(val parent: HasSTarget,
     else "(No span)"
   }
 
+  /**
+   * Gets the sentence to which this sTarget belongs.
+   */
   def sentence = parent match {
     case p: TargetFrame ⇒ p.parent match {
       case pp: Attitude ⇒ pp.parent.sentence

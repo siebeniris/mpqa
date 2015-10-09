@@ -34,6 +34,9 @@ class ETarget(val parent: TargetFrame,
     else "(No span)"
   }
 
+  /**
+   * Gets the sentence to which this eTarget belongs.
+   */
   def sentence = parent.parent match {
     case p: ExpressiveSubjectivity ⇒ p.sentence
     case p: Attitude ⇒ p.parent.sentence
@@ -46,6 +49,7 @@ class ETarget(val parent: TargetFrame,
   def getId = id
   def getSpan = span
   def getSpanStr = spanStr
+  def getSentence = sentence
   //endregion
 
 
