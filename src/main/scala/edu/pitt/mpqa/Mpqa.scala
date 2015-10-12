@@ -79,32 +79,33 @@ object Mpqa {
   def allSubjObjs = documents.flatMap(_.sentences).flatMap(_.subjObjs)
 
   def allDirectSubjectives = {
-    documents
-      .flatMap(_.sentences)
-      .flatMap(_.subjObjs)
-      .filter(_.isInstanceOf[DirectSubjective])
-      .map(_.asInstanceOf[DirectSubjective])
+    for {
+      document ← documents
+      sentence ← document.sentences
+      subjObj ← sentence.subjObjs
+      if subjObj.isInstanceOf[DirectSubjective]
+    } yield subjObj.asInstanceOf[DirectSubjective]
   }
 
   def allExpressiveSubjectivities = {
-    documents
-      .flatMap(_.sentences)
-      .flatMap(_.subjObjs)
-      .filter(_.isInstanceOf[ExpressiveSubjectivity])
-      .map(_.asInstanceOf[ExpressiveSubjectivity])
+    for {
+      document ← documents
+      sentence ← document.sentences
+      subjObj ← sentence.subjObjs
+      if subjObj.isInstanceOf[ExpressiveSubjectivity]
+    } yield subjObj.asInstanceOf[ExpressiveSubjectivity]
   }
 
   def allObjectiveSpeechEvents = {
-    documents
-      .flatMap(_.sentences)
-      .flatMap(_.subjObjs)
-      .filter(_.isInstanceOf[ObjectiveSpeechEvent])
-      .map(_.asInstanceOf[ObjectiveSpeechEvent])
+    for {
+      document ← documents
+      sentence ← document.sentences
+      subjObj ← sentence.subjObjs
+      if subjObj.isInstanceOf[ObjectiveSpeechEvent]
+    } yield subjObj.asInstanceOf[ObjectiveSpeechEvent]
   }
 
-  def allETargets = {
-    allTargetFrames.flatMap(_.eTargets)
-  }
+  def allETargets = allTargetFrames.flatMap(_.eTargets)
 
   def allSTargets = {
     allObjectiveSpeechEvents.filter(_.sTarget != null).map(_.sTarget) ++
