@@ -13,6 +13,7 @@ libraryDependencies += "me.yuhuan" %% "mpqa" % "0.0.1-SNAPSHOT"
 ### For Maven Users
 First, add the following lines in `<project> ... </project>` of your `pom.xml` file:
 
+```xml
     <repositories>
         <repository>
             <id>sonatypeSnapshots</id>
@@ -26,17 +27,19 @@ First, add the following lines in `<project> ... </project>` of your `pom.xml` f
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
+```
 
 > **NOTE**: This step is necessary because the MPQA project is not publicly released yet. The MPQA is currently on the Sonatype snapshot repository instead of the Maven Central Repository. In the final release, only the following step will be needed.
 
 Then, add the following lines in `<dependencies> ... </dependencies>` of your `pom.xml` file:
 
+```xml
     <dependency>
         <groupId> me.yuhuan </groupId>
         <artifactId> mpqa_2.11</artifactId>
         <version> 0.0.1-SNAPSHOT </version>
     </dependency>
-
+```
 
 ## Documentation
 For ScalaDoc (the machine-generated documentation for classes and methods), please [click here](http://people.cs.pitt.edu/~yuhuan/mpqa-doc/#edu.pitt.mpqa.node.Document).
