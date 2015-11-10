@@ -30,6 +30,7 @@ import scala.collection.JavaConverters._
 class DirectSubjective(val sentence: Sentence,
                        val span: Span,
                        val nestedSource: Seq[String],
+                       val immediateSourceMention: ImmediateSourceMention,
                        var attitudes: Seq[Attitude],
                        val expressionIntensity: ExpressionIntensity,
                        val intensity: Intensity,

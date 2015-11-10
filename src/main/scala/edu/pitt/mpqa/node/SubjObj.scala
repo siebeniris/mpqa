@@ -20,9 +20,11 @@ trait SubjObj extends Annotation {
   def nestedSource: Seq[String]
   def insubstantiality: Insubstantiality
 
-  def immediateSourceMention = nestedSource.last
+  def immediateSourceMention: ImmediateSourceMention
 
   //region Conforming to TreeNode[Annotation]
   override def parent: Annotation = sentence
   //endregion
+
+  def getImmediateSourceMention = immediateSourceMention
 }

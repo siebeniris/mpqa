@@ -21,6 +21,7 @@ import scala.collection.JavaConverters._
  */
 class ObjectiveSpeechEvent(val sentence: Sentence,
                            val nestedSource: Seq[String],
+                           val immediateSourceMention: ImmediateSourceMention,
                            val span: Span,
                            var sTarget: STarget,
                            val insubstantiality: Insubstantiality) extends SubjObj with HasSTarget {

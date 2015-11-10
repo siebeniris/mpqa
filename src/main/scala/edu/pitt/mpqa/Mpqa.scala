@@ -45,7 +45,7 @@ object Mpqa {
 
   // Parse the json files as a sequence of MPQA Documents
   val documents: Seq[Document] = docJsonTexts.values.map(d ⇒ parseJsonOfDocument(d)).toSeq
-
+  val documentById: Map[String, Document] = documents.map(d ⇒ d.id → d).toMap
 
   /**
    * Views the actual text given a text span.
@@ -60,6 +60,7 @@ object Mpqa {
 
   //region Java Compatibility Methods
   def getDocuments: util.List[Document] = documents.asJava
+  def getDocumentById(id: String): Document = documentById(id)
   def getAllSentences = allSentences.asJava
   def getAllSubjObjs = allSubjObjs.asJava
   def getAllDirectSubjectives = allDirectSubjectives.asJava
@@ -167,6 +168,7 @@ object Mpqa {
         else throw new Exception(s"Unknown Uncertainty $s")
       }
       case JNull ⇒ null
+      case JNothing ⇒ null
     }
   }
 
@@ -285,6 +287,23 @@ object Mpqa {
   //endregion
 
   //region Parsing Methods for Nodes
+
+  private def parseImmediateSourceMention(json: JValue): ImmediateSourceMention = {
+    if (json != null) {
+      val nestedSource = parseNestedSource(json \ "nested_source")
+
+      if (json \ "nested_source" == null) {
+        val bp = 0
+      }
+
+      val span = parseSpan(json \ "span")
+      val uncertainty = parseUncertainty(json \ "uncertainty")
+
+      if (nestedSource != null) new ImmediateSourceMention(nestedSource, span, uncertainty) else null
+    }
+    else null
+  }
+
   private def parseNestedSource(json: JValue): Seq[String] = {
     json match {
       case JArray(l) ⇒ {
@@ -293,6 +312,7 @@ object Mpqa {
           s
         })
       }
+      case JNothing ⇒ null
     }
   }
 
@@ -452,10 +472,13 @@ object Mpqa {
 
                 val intensity: Intensity = parseIntensity(jsonAnnotation \ "intensity")
 
+                val immSourceMention = parseImmediateSourceMention(jsonAnnotation \ "immSourceMention")
+
                 val scalaDirSubj = new DirectSubjective(
                   scalaSentence,
                   span,
                   nestedSource,
+                  immSourceMention,
                   null,
                   exprIntensity,
                   intensity,
@@ -473,9 +496,10 @@ object Mpqa {
                 val intensity: Intensity = parseIntensity(jsonAnnotation \ "intensity")
 
                 val polarity: Polarity = parsePolarity(jsonAnnotation \ "polarity")
+                val immSourceMention = parseImmediateSourceMention(jsonAnnotation \ "immSourceMention")
 
                 val scalaExprSubj = new ExpressiveSubjectivity(
-                  scalaSentence, nestedSource, span, polarity, intensity, insubstantiality, null
+                  scalaSentence, nestedSource, immSourceMention, span, polarity, intensity, insubstantiality, null
                 )
 
                 // deal with target frame
@@ -486,9 +510,10 @@ object Mpqa {
               }
 
               case JString("YObjSpeechEvent") ⇒ {
+                val immSourceMention = parseImmediateSourceMention(jsonAnnotation \ "immSourceMention")
 
                 val scalaObjSpeechEvent = new ObjectiveSpeechEvent(
-                  scalaSentence, nestedSource, span, null, insubstantiality
+                  scalaSentence, nestedSource, immSourceMention, span, null, insubstantiality
                 )
 //
 //                if (jsonAnnotation \ "target" != JNull) {
@@ -522,7 +547,8 @@ object Mpqa {
             val polarity = parsePolarity(x \ "polarity")
             val span = parseSpan(x \ "span")
             val nestedSource = parseNestedSource(x \ "nestedSource")
-            val curAtt = new Attitude(scalaDirSubj, id, nestedSource, span, attitudeType, intensity, polarity, null)
+            val immSourceMention = parseImmediateSourceMention(x \ "immSourceMention")
+            val curAtt = new Attitude(scalaDirSubj, id, nestedSource, immSourceMention, span, attitudeType, intensity, polarity, null)
 
             // deal with target frame
             val targetFrame = parseTargetFrame(x \ "targetFrame", curAtt)

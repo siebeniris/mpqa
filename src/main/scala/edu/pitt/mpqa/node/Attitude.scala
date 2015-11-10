@@ -33,6 +33,7 @@ import scala.collection.JavaConverters._
 class Attitude(val parent: SubjObj,
                val id: String,
                val nestedSource: Seq[String],
+               val immediateSourceMention: ImmediateSourceMention,
                val span: Span,
                val attitudeType: AttitudeType,
                val intensity: Intensity,

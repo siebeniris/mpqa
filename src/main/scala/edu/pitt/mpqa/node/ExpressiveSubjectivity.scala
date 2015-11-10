@@ -26,6 +26,7 @@ import scala.collection.JavaConverters._
  */
 class ExpressiveSubjectivity(val sentence: Sentence,
                              val nestedSource: Seq[String],
+                             val immediateSourceMention: ImmediateSourceMention,
                              val span: Span,
                              val polarity: Polarity,
                              val intensity: Intensity,
