@@ -299,7 +299,9 @@ object Mpqa {
       val span = parseSpan(json \ "span")
       val uncertainty = parseUncertainty(json \ "uncertainty")
 
-      if (nestedSource != null) new ImmediateSourceMention(nestedSource, span, uncertainty) else null
+      if (nestedSource != null) {
+        new ImmediateSourceMention(nestedSource, span, uncertainty)
+      } else null
     }
     else null
   }

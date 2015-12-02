@@ -1,5 +1,8 @@
 package edu.pitt.mpqa.node
 
+import edu.pitt.mpqa.core._
+import edu.pitt.mpqa.option._
+
 import scala.collection.JavaConverters._
 
 /**
@@ -21,9 +24,30 @@ class Sentence(val document: Document,
    */
   def spanStr: String = span.str(document.id).replace('\n', ' ')
 
+  def allSentiments: Seq[Sentiment] = {
+    val DSs = subjObjs.filter(_.isInstanceOf[DirectSubjective]).map(_.asInstanceOf[DirectSubjective])
+
+    for {
+      ds <- DSs
+      a <- ds.attitudes
+      if a.getAttitudeType == AttitudeType.Sentiment
+      et <- a.targetFrame.eTargets
+    } yield Sentiment(a.immediateSourceMention, et.span, a.polarity)
+
+  }
+
+
   override def toString = spanStr
 
   //region Java Compatibility Methods
+
+  /**
+   * Gets all sentiments in this sentence. Each will be a [[Sentiment]] object.
+   * @see [[Sentiment]]
+   * @return A list of sentiments in this sentence.
+   */
+  def getAllSentiments: java.util.List[Sentiment] = allSentiments.asJava
+
   /**
    * Gets the document that the sentence belongs to.
    */

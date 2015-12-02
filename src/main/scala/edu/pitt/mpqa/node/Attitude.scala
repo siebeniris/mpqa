@@ -30,7 +30,7 @@ import scala.collection.JavaConverters._
  * @param targetFrame The target frame of this attitude.
  *
  */
-class Attitude(val parent: SubjObj,
+class Attitude(val parent: DirectSubjective,
                val id: String,
                val nestedSource: Seq[String],
                val immediateSourceMention: ImmediateSourceMention,
