@@ -5,9 +5,9 @@ The **Scala/Java API for MPQA 3.0** is the simplest way to incorporate the [MPQA
 
 By requesting and downloading the MPQA Corpus, the user agrees to the following:
 
-The annotations in this data collection are copyrighted by the MITRE Corporation. User acknowledges and agrees that: (i) as between User and MITRE, MITRE owns all the right, title and interest in the Annotated Content, unless expressly stated otherwise; (ii) nothing in this Agreement shall confer in User any right of ownership in the Annotated Content; and (iii) User is granted a non-exclusive, royalty free, worldwide license (with no right to sublicense) to use the Annotated Content solely for academic and research purposes. This Agreement is governed by the law of the Commonwealth of Massachusetts and User agrees to submit to the exclusive jurisdiction of the Massachusetts courts.
+> The annotations in this data collection are copyrighted by the MITRE Corporation. User acknowledges and agrees that: (i) as between User and MITRE, MITRE owns all the right, title and interest in the Annotated Content, unless expressly stated otherwise; (ii) nothing in this Agreement shall confer in User any right of ownership in the Annotated Content; and (iii) User is granted a non-exclusive, royalty free, worldwide license (with no right to sublicense) to use the Annotated Content solely for academic and research purposes. This Agreement is governed by the law of the Commonwealth of Massachusetts and User agrees to submit to the exclusive jurisdiction of the Massachusetts courts.
 
-**NOTE**: The textual news documents annotated in this corpus have been collected from a wide range of sources and are not copyrighted by the MITRE Corporation. The user acknowledges that the use of these news documents is restricted to research and/or academic purposes only.
+> **NOTE**: The textual news documents annotated in this corpus have been collected from a wide range of sources and are not copyrighted by the MITRE Corporation. The user acknowledges that the use of these news documents is restricted to research and/or academic purposes only.
 
 ## Installation
 ### For SBT Users
