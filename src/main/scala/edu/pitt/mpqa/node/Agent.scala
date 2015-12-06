@@ -1,39 +1,21 @@
 package edu.pitt.mpqa.node
 
+import edu.pitt.mpqa.core.Span
+
 /**
- * Represents an agent mention.
- * @param identifier The ID of the agent.
- *           Usually a meaningful abbreviation.
- *           Unique within a document.
- * @param span The text span of this agent.
- *             (TODO: Is it the span of the first agent mention among all mentions?)
- */
-case class Agent(identifier: String, span: Span) {
-  /**
-   * The string of this agent.
-   * @return
-   */
-  def spanStr = identifier
+  * @author Yuhuan Jiang (jyuhuan@gmail.com).
+  */
+class Agent(var parent: Document,
+            var id: String,
+            var span: Span) { self =>
 
-  //region Java Compatibility Methods
-  /**
-   * Gets the ID of the agent.
-   * Usually a meaningful abbreviation.
-   * Unique within a document.
-   */
-  def getIdentifier = identifier
+  //region Java Getters and Setters
+  def getParent: Document = parent
+  def getId: String = id
+  def getSpan: Span = span
 
-  /**
-   * Gets the text span of this agent.
-   * (TODO: Is it the span of the first agent mention among all mentions?)
-   */
-  def getSpan = span
-
-  /**
-   * Gets string of this agent.
-   */
-  def getSpanStr = spanStr
+  def setParent(document: Document): Unit = self.parent = document
+  def setId(id: String): Unit = self.id = id
+  def setSpan(span: Span): Unit = self.span = span
   //endregion
-
-  override def toString = spanStr
 }
