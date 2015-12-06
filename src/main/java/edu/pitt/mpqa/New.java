@@ -19,12 +19,13 @@ public class New {
 
 
     public static Document Document() {
-        return new Document(null, null, null);
+        return new Document(null, null, null, null);
     }
 
-    public static Document Document(String name, java.util.List<Agent> agents, java.util.List<Sentence> sentences) {
+    public static Document Document(String name, String text, java.util.List<Agent> agents, java.util.List<Sentence> sentences) {
         Document result = New.Document();
         result.setName(name);
+        result.setText(text);
         result.setAgents(agents);
         result.setSentences(sentences);
         return result;
