@@ -18,14 +18,10 @@ class DirectSubjective(var span: Span,
                        var parent: Sentence) extends SubjObj { self =>
 
   //region Java Getters and Setters
-  def getSpan: Span = span
   def getId: String = id
-  def getNestedSource: NestedSource = nestedSource
   def getAttitudes: java.util.List[Attitude] = attitudes.asJava
   def getExpressionIntensity: ExpressionIntensity = expressionIntensity
   def getIntensity: Intensity = intensity
-  def getInsubstantiality: Insubstantiality = insubstantiality
-  def getParent: Sentence = parent
 
   def setSpan(span: Span): Unit = self.span = span
   def setId(newId: String): Unit = self.id = newId
