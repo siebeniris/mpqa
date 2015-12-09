@@ -7,6 +7,7 @@ import edu.pitt.mpqa.option._
   * @author Yuhuan Jiang (jyuhuan@gmail.com).
   */
 class ExpressiveSubjectivity(var span: Span,
+                             var id: String,
                              var nestedSource: NestedSource,
                              var targetFrame: TargetFrame,
                              var polarity: Polarity,
@@ -15,6 +16,7 @@ class ExpressiveSubjectivity(var span: Span,
                              var parent: Sentence) extends SubjObj with HasTargetFrame { self =>
   //region Java Getters and Setters
   def getSpan: Span = span
+  def getId: String = id
   def getNestedSource: NestedSource = nestedSource
   def getTargetFrame: TargetFrame = targetFrame
   def getPolarity: Polarity = polarity
@@ -23,6 +25,7 @@ class ExpressiveSubjectivity(var span: Span,
   def getParent: Sentence = parent
 
   def setSpan(span: Span) = self.span = span
+  def setId(newId: String): Unit = self.id = newId
   def setNestedSource(nestedSource: NestedSource): Unit = self.nestedSource = nestedSource
   def setTargetFrame(targetFrame: TargetFrame) = self.targetFrame = targetFrame
   def setPolarity(newValue: Polarity): Unit = self.polarity = newValue

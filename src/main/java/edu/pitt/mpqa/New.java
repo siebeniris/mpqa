@@ -46,10 +46,11 @@ public class New {
 
 
     public static DirectSubjective DirectSubjective() {
-        return new DirectSubjective(null, null, null, null, null, null, null);
+        return new DirectSubjective(null, null, null, null, null, null, null, null);
     }
 
     public static DirectSubjective DirectSubjective(Span span,
+                                                    String id,
                                                     NestedSource nestedSource,
                                                     java.util.List<Attitude> attitudes,
                                                     ExpressionIntensity expressionIntensity,
@@ -58,6 +59,7 @@ public class New {
                                                     Sentence parent) {
         DirectSubjective result = New.DirectSubjective();
         result.setSpan(span);
+        result.setId(id);
         result.setNestedSource(nestedSource);
         result.setAttitudes(attitudes);
         result.setExpressionIntensity(expressionIntensity);
@@ -69,10 +71,11 @@ public class New {
 
 
     public static ExpressiveSubjectivity ExpressiveSubjectivity() {
-        return new ExpressiveSubjectivity(null, null, null, null, null, null, null);
+        return new ExpressiveSubjectivity(null, null, null, null, null, null, null, null);
     }
 
     public static ExpressiveSubjectivity ExpressiveSubjectivity(Span span,
+                                                                String id,
                                                                 NestedSource nestedSource,
                                                                 TargetFrame targetFrame,
                                                                 Polarity polarity,
@@ -81,6 +84,7 @@ public class New {
                                                                 Sentence parent) {
         ExpressiveSubjectivity result = New.ExpressiveSubjectivity();
         result.setSpan(span);
+        result.setId(id);
         result.setNestedSource(nestedSource);
         result.setTargetFrame(targetFrame);
         result.setPolarity(polarity);
@@ -92,16 +96,18 @@ public class New {
 
 
     public static ObjectiveSpeech ObjectiveSpeech() {
-        return new ObjectiveSpeech(null, null, null, null, null);
+        return new ObjectiveSpeech(null, null, null, null, null, null);
     }
 
     public static ObjectiveSpeech ObjectiveSpeech(Span span,
+                                                  String id,
                                                   NestedSource nestedSource,
                                                   TargetFrame targetFrame,
                                                   Insubstantiality insubstantiality,
                                                   Sentence parent) {
         ObjectiveSpeech result = New.ObjectiveSpeech();
         result.setSpan(span);
+        result.setId(id);
         result.setNestedSource(nestedSource);
         result.setTargetFrame(targetFrame);
         result.setInsubstantiality(insubstantiality);
