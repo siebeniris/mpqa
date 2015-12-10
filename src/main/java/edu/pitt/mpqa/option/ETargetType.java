@@ -5,5 +5,6 @@ package edu.pitt.mpqa.option;
  */
 public enum ETargetType {
     Event,
-    Entity
+    Entity,
+    Other
 }
