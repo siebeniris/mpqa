@@ -25,7 +25,7 @@ class ExpressiveSubjectivity(var span: Span,
   def setNestedSource(nestedSource: NestedSource): Unit = self.nestedSource = nestedSource
   def setTargetFrame(targetFrame: TargetFrame) = self.targetFrame = targetFrame
   def setPolarity(newValue: Polarity): Unit = self.polarity = newValue
-  def setIntensity(newValue: Intensity): Unit = self.intensity = intensity
+  def setIntensity(newValue: Intensity): Unit = self.intensity = newValue
   def setInsubstantiality(insubstantiality: Insubstantiality): Unit = self.insubstantiality = insubstantiality
   def setParent(sentence: Sentence): Unit = self.parent = sentence
 
