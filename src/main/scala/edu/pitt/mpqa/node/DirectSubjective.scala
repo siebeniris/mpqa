@@ -26,7 +26,7 @@ class DirectSubjective(var span: Span,
   def setSpan(span: Span): Unit = self.span = span
   def setId(newId: String): Unit = self.id = newId
   def setNestedSource(nestedSource: NestedSource): Unit = self.nestedSource = nestedSource
-  def setAttitudes(attitudes: java.util.List[Attitude]): Unit = attitudes.asScala
+  def setAttitudes(attitudes: java.util.List[Attitude]): Unit = self.attitudes = attitudes.asScala
   def setExpressionIntensity(expressionIntensity: ExpressionIntensity): Unit = self.expressionIntensity = expressionIntensity
   def setIntensity(intensity: Intensity): Unit = self.intensity = intensity
   def setInsubstantiality(insubstantiality: Insubstantiality): Unit = self.insubstantiality = insubstantiality
