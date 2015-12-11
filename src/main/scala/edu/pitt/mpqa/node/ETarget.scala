@@ -18,14 +18,14 @@ class ETarget(var span: Span,
   def getType: ETargetType = typ
   def getIsNegated: NegatedOption = isNegated
   def getIsReferredInSpan: ReferredInSpanOption = isReferredInSpan
-  def getParent: java.util.List[HasETarget] = parents.asJava
+  def getParents: java.util.List[HasETarget] = parents.asJava
 
   def setSpan(span: Span): Unit = self.span = span
   def setId(id: String): Unit = self.id = id
   def setType(newType: ETargetType): Unit = self.typ = newType
   def setIsNegated(newValue: NegatedOption): Unit = self.isNegated = newValue
   def setIsReferredInSpan(newValue: ReferredInSpanOption): Unit = self.isReferredInSpan = newValue
-  def setParent(newParents: java.util.List[HasETarget]): Unit = self.parents = newParents.asScala
+  def setParents(newParents: java.util.List[HasETarget]): Unit = self.parents = newParents.asScala
   //endregion
 
 }
