@@ -187,7 +187,7 @@ public class New {
                                   ETargetType eTargetType,
                                   NegatedOption isNegated,
                                   ReferredInSpanOption isReferredInSpan,
-                                  HasETarget parent) {
+                                  java.util.List<HasETarget> parent) {
         ETarget result = New.ETarget();
         result.setSpan(span);
         result.setId(id);
