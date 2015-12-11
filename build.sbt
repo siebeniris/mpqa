@@ -1,6 +1,6 @@
 name := "mpqa"
 
-version := "0.0.16-SNAPSHOT"
+version := "0.1.0-SNAPSHOT"
 
 organization := "me.yuhuan"
 
@@ -25,6 +25,7 @@ publishArtifact in Test := false
 //region Custom Dependencies
 //libraryDependencies += "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.4"
 //libraryDependencies += "net.liftweb" % "lift-json_2.11" % "2.6.2"
+libraryDependencies += "uk.ac.gate" % "gate-core" % "8.1"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 libraryDependencies += "me.yuhuan" %% "yutil" % "0.0.4-SNAPSHOT"
