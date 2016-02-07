@@ -8,6 +8,7 @@ import edu.pitt.mpqa.node.Document
 case class Span(start: Int, end: Int) {
   /**
     * Tests if this span subsumes a given span.
+ *
     * @see [[Span#properlySubsumes()]]
     * @param that The span to compare to.
     * @return `true` if this span indeed subsumes the given span. `false` otherwise.
@@ -33,12 +34,13 @@ case class Span(start: Int, end: Int) {
     * Obtains the text that this span actually points to in the given document.
     * If the document is `"Hello world!"`, and this span is Span(3, 7), this method returns
     * `"lo w"`.
+ *
     * @param document The document in which the text is stored.
     * @return The text that this span actually represents.
     */
-  def text(document: Document): String = document.text.substring(start, end)
+  def str(source: String): String = source.substring(start, end)
 
-  def getText(document: Document): String = text(document)
+  def getStr(source: String): String = str(source)
   def getLength = length
 }
 

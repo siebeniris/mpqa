@@ -12,6 +12,23 @@ class ETarget(var span: Span,
               var isNegated: NegatedOption,
               var isReferredInSpan: ReferredInSpanOption,
               var parents: Seq[HasETarget]) { self =>
+
+  def spanStr: String = {
+    val source: String = parents.head match {
+      case s: STarget => s.parent.parent match {
+        case att: Attitude => att.parent.parent.parent.text
+        case es: ExpressiveSubjectivity => es.parent.parent.text
+        case os: ObjectiveSpeech => os.parent.parent.text
+      }
+      case tf: TargetFrame => tf.parent match {
+        case att: Attitude => att.parent.parent.parent.text
+        case es: ExpressiveSubjectivity => es.parent.parent.text
+        case os: ObjectiveSpeech => os.parent.parent.text
+      }
+    }
+    span.str(source)
+  }
+
   //region Java Getters and Setters
   def getSpan: Span = span
   def getId: String = id

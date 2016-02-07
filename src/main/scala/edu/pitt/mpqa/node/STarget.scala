@@ -13,6 +13,16 @@ class STarget(var span: Span,
               var uncertainty: Uncertainty,
               var eTargets: Seq[ETarget],
               var parent: TargetFrame) extends HasETarget { self =>
+
+  def spanStr: String = {
+    val source = parent.parent match {
+      case att: Attitude => att.parent.parent.parent.text
+      case es: ExpressiveSubjectivity => es.parent.parent.text
+      case os: ObjectiveSpeech => os.parent.parent.text
+    }
+    span.str(source)
+  }
+
   //region Java Getters and Setters
   def getSpan: Span = span
   def getId: String = id

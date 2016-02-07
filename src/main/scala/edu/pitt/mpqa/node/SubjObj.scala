@@ -12,6 +12,8 @@ trait SubjObj {
   def nestedSource: NestedSource
   def insubstantiality: Insubstantiality
 
+  def spanStr: String = span.str(parent.parent.text)
+
   //region Java Getters and Setters
   def getParent: Sentence = parent
   def getSpan: Span = span

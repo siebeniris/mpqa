@@ -9,6 +9,9 @@ import scala.collection.JavaConverters._
 class Sentence(var span: Span,
                var subjObjs: Seq[SubjObj],
                var parent: Document) { self =>
+
+  def spanStr: String = span.str(parent.text)
+
   //region Java Getters and Setters
   def getSpan: Span = span
   def getSubjObjs: java.util.List[SubjObj] = subjObjs.asJava

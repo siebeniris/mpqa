@@ -20,45 +20,56 @@ import edu.pitt.mpqa.core.Span;
 import edu.pitt.mpqa.node.*;
 import edu.pitt.mpqa.option.*;
 
-/**
- * @author Lingjia Deng.
- */
 public class ReadGate {
-	
+
+	public static FeatureMap readMetadata(String pathToGateXml) throws MalformedURLException, GateException{
+		File f  = new File(pathToGateXml);
+		Gate.init();
+		Document doc = (Document)
+				Factory.createResource("gate.corpora.DocumentImpl",
+						Utils.featureMap(gate.Document.DOCUMENT_URL_PARAMETER_NAME,
+								f.toURI().toURL(),
+								gate.Document.DOCUMENT_ENCODING_PARAMETER_NAME, "UTF-8"));
+
+		FeatureMap docFeatures = doc.getFeatures();
+
+		return docFeatures;
+	}
+
 	public static String readText(String pathToGateXml) throws MalformedURLException, GateException{
 		File f  = new File(pathToGateXml);
-		Gate.init();			
-		Document doc = (Document) 
-				Factory.createResource("gate.corpora.DocumentImpl", 
-				  Utils.featureMap(gate.Document.DOCUMENT_URL_PARAMETER_NAME, 
-				f.toURI().toURL(),
-				gate.Document.DOCUMENT_ENCODING_PARAMETER_NAME, "UTF-8")); 
-		
+		Gate.init();
+		Document doc = (Document)
+				Factory.createResource("gate.corpora.DocumentImpl",
+						Utils.featureMap(gate.Document.DOCUMENT_URL_PARAMETER_NAME,
+								f.toURI().toURL(),
+								gate.Document.DOCUMENT_ENCODING_PARAMETER_NAME, "UTF-8"));
+
 		return doc.getContent().toString();
 	}
-	
+
 	public static List<Sentence> readGateAnnotations(String pathToGateXml) throws GateException, MalformedURLException{
 		File f  = new File(pathToGateXml);
-		Gate.init();			
-		Document doc = (Document) 
-				Factory.createResource("gate.corpora.DocumentImpl", 
-				  Utils.featureMap(gate.Document.DOCUMENT_URL_PARAMETER_NAME, 
-				f.toURI().toURL(),
-				gate.Document.DOCUMENT_ENCODING_PARAMETER_NAME, "UTF-8")); 
-			
+		Gate.init();
+		Document doc = (Document)
+				Factory.createResource("gate.corpora.DocumentImpl",
+						Utils.featureMap(gate.Document.DOCUMENT_URL_PARAMETER_NAME,
+								f.toURI().toURL(),
+								gate.Document.DOCUMENT_ENCODING_PARAMETER_NAME, "UTF-8"));
+
 		doc.setMarkupAware(new Boolean(false));
 		AnnotationSet annos = doc.getAnnotations("MPQA");
-		
+
 		HashMap<String, ETarget> eTargets = new HashMap<String, ETarget>();
 		// eTarget
 		for (Annotation anno:annos.get("eTarget")){
-			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()), 
+			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()),
 					Math.toIntExact(anno.getEndNode().getOffset()));
-			
+
 			ETarget eTarget = New.ETarget();
 			eTarget.setSpan(span);
 			eTarget.setParents(new ArrayList<HasETarget>());
-			
+
 			FeatureMap features = anno.getFeatures();
 			for (Object feature:features.keySet()){
 				String featureName = feature.toString();
@@ -68,7 +79,7 @@ public class ReadGate {
 				else if (featureName.equals("isNegated")){
 					if (featureValue.toLowerCase().equals("yes"))
 						eTarget.setIsNegated(NegatedOption.Yes);
-					else	
+					else
 						eTarget.setIsNegated(NegatedOption.No);
 				}
 				else if (featureName.equals("isReferredInSpan")){
@@ -88,17 +99,17 @@ public class ReadGate {
 			}
 			eTargets.put(eTarget.getId(), eTarget);
 		}  // eTarget
-		
+
 		// sTarget
 		HashMap<String, STarget> sTargets = new HashMap<String, STarget>();
 		for(Annotation anno:annos.get("sTarget")){
-			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()), 
+			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()),
 					Math.toIntExact(anno.getEndNode().getOffset()));
-			
+
 			STarget sTarget = New.STarget();
 			sTarget.setSpan(span);
 			ArrayList<ETarget> tmpETargets = new ArrayList<ETarget>();
-			
+
 			FeatureMap features = anno.getFeatures();
 			for (Object feature:features.keySet()){
 				String featureName = feature.toString();
@@ -123,14 +134,14 @@ public class ReadGate {
 			}
 			sTargets.put(sTarget.getId(), sTarget);
 		}    // sTarget
-		
+
 		// targetFrame
 		HashMap<String, TargetFrame> targetFrames = new HashMap<String, TargetFrame>();
 		for (Annotation anno:annos.get("targetFrame")){
 			TargetFrame targetFrame = New.TargetFrame();
 			List<STarget> tmpSTargets = new ArrayList<STarget>();
 			List<ETarget> tmpETargets = new ArrayList<ETarget>();
-			
+
 			FeatureMap features = anno.getFeatures();
 			for (Object feature:features.keySet()){
 				String featureName = feature.toString();
@@ -162,7 +173,7 @@ public class ReadGate {
 								tmpSTargets.add(sTargets.get(sTargetId));
 								sTargets.get(sTargetId).setParent(targetFrame);
 							}
-							
+
 						}
 					}  // each eTargetId
 					targetFrame.setSTargets(tmpSTargets);
@@ -170,26 +181,26 @@ public class ReadGate {
 			}
 			targetFrames.put(targetFrame.getId(), targetFrame);
 		}   // target frame
-		
+
 		// nested-source and agent
 		ArrayList<NestedSource> sources = new ArrayList<NestedSource>();
 		ArrayList<Agent> agents = new ArrayList<Agent>();
-		
+
 		for (Annotation anno:annos.get("agent")){
-			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()), 
+			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()),
 					Math.toIntExact(anno.getEndNode().getOffset()));
-			
+
 			NestedSource source = New.NestedSource();
 			source.setSpanOfImmediateSource(span);
-			
+
 			Agent agent = New.Agent();
 			agent.setSpan(span);
-			
+
 			FeatureMap features = anno.getFeatures();
 			for (Object feature:features.keySet()){
 				String featureName = feature.toString();
 				String featureValue = features.get(featureName).toString();
-				
+
 				if (featureName.equals("nested-source")){
 					String[] ids = featureValue.split(",");
 					List<String> tmpIds = new ArrayList<String>();
@@ -203,9 +214,9 @@ public class ReadGate {
 				}
 				else if (featureName.contains("uncertain")){
 					source.setUncertainty(Uncertainty.SomewhatUncertain);
-				}		
+				}
 			}
-			
+
 			if (features.keySet().contains("nested-source"))
 				sources.add(source);
 			if (features.keySet().contains("id"))
@@ -220,16 +231,16 @@ public class ReadGate {
 				sources.add(source);
 			}
 		}
-		
+
 		// attitude
 		HashMap<String, Attitude> attitudes = new HashMap<String, Attitude>();
 		for (Annotation anno:annos.get("attitude")){
-			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()), 
+			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()),
 					Math.toIntExact(anno.getEndNode().getOffset()));
-			
+
 			Attitude attitude = New.Attitude();
 			attitude.setSpan(span);
-			
+
 			FeatureMap features = anno.getFeatures();
 			boolean flag = false;
 			for (Object feature:features.keySet()){
@@ -313,16 +324,16 @@ public class ReadGate {
 			}  // each feature
 			attitudes.put(attitude.getId(), attitude);
 		} // attitude
-		
+
 		// ose
 		ArrayList<ObjectiveSpeech> oses = new ArrayList<ObjectiveSpeech>();
 		for (Annotation anno:annos.get("objective-speech-event")){
-			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()), 
+			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()),
 					Math.toIntExact(anno.getEndNode().getOffset()));
-			
+
 			ObjectiveSpeech ose = New.ObjectiveSpeech();
 			ose.setSpan(span);
-			
+
 			FeatureMap features = anno.getFeatures();
 			for (Object feature:features.keySet()){
 				String featureName = feature.toString();
@@ -357,19 +368,19 @@ public class ReadGate {
 					ose.setNestedSource(tmp);
 				}
 			}
-			
+
 			oses.add(ose);
 		}
-		
+
 		// ese
 		ArrayList<ExpressiveSubjectivity> eses = new ArrayList<ExpressiveSubjectivity>();
 		for(Annotation anno:annos.get("expressive-subjectivity")){
-			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()), 
-						Math.toIntExact(anno.getEndNode().getOffset()));
-				
+			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()),
+					Math.toIntExact(anno.getEndNode().getOffset()));
+
 			ExpressiveSubjectivity ese = New.ExpressiveSubjectivity();
 			ese.setSpan(span);
-			
+
 			FeatureMap features = anno.getFeatures();
 			for (Object feature:features.keySet()){
 				String featureName = feature.toString();
@@ -450,21 +461,21 @@ public class ReadGate {
 			}
 			eses.add(ese);
 		}
-		
+
 		// ds
 		ArrayList<DirectSubjective> dss = new ArrayList<DirectSubjective>();
 		for(Annotation anno:annos.get("direct-subjective")){
-			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()), 
-						Math.toIntExact(anno.getEndNode().getOffset()));
-				
+			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()),
+					Math.toIntExact(anno.getEndNode().getOffset()));
+
 			DirectSubjective ds = New.DirectSubjective();
 			ds.setSpan(span);
-			
+
 			FeatureMap features = anno.getFeatures();
 			for (Object feature:features.keySet()){
 				String featureName = feature.toString();
 				String featureValue = features.get(featureName).toString();
-				
+
 				if (featureName.equals("id"))
 					ds.setId(featureValue);
 				else if (featureName.equals("attitude-link")){
@@ -534,17 +545,17 @@ public class ReadGate {
 			}  // each feature
 			dss.add(ds);
 		}  // ds
-		
+
 		// sentence
 		List<Sentence> sentences = new ArrayList<Sentence>();
-		
+
 		for (Annotation anno:annos.get("sentence")){
-			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()), 
+			Span span = new Span(Math.toIntExact(anno.getStartNode().getOffset()),
 					Math.toIntExact(anno.getEndNode().getOffset()));
-			
+
 			Sentence sentence = New.Sentence();
 			sentence.setSpan(span);
-			
+
 			List<SubjObj> subjobjs = new ArrayList<SubjObj>();
 			// put ds
 			for(DirectSubjective ds:dss){
@@ -574,7 +585,7 @@ public class ReadGate {
 						}
 				}
 			}
-			
+
 			// put ese
 			for(ExpressiveSubjectivity ese:eses){
 				if (span.subsumes(ese.getSpan())){
@@ -599,7 +610,7 @@ public class ReadGate {
 					ese.setNestedSource(nestedSource);
 				}
 			}
-			
+
 			// put ose
 			for(ObjectiveSpeech ose:oses){
 				if (span.subsumes(ose.getSpan()) ){
@@ -624,9 +635,9 @@ public class ReadGate {
 					ose.setNestedSource(nestedSource);
 				}
 			}
-			
+
 			sentence.setSubjObjs(subjobjs);
-			
+
 			// insert sentence sorted by start position
 			int n=sentences.size();
 			if (n<1)
@@ -643,10 +654,10 @@ public class ReadGate {
 					sentences.add(sentence);
 			}
 		}
-		
+
 		return sentences;
 	}
-	
+
 	private static NestedSource findNestedSource(SubjObj subjObj, ArrayList<NestedSource> sources){
 		ArrayList<NestedSource> sourcesInSentence = new ArrayList<NestedSource>();
 		for (NestedSource source:sources){

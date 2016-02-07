@@ -16,6 +16,8 @@ class Attitude(var span: Span,
                var polarity: Polarity,
                var parent: DirectSubjective) extends HasTargetFrame { self =>
 
+  def spanStr: String = span.str(parent.parent.parent.text)
+
   //region Java Getters and Setters
   def getSpan: Span = span
   def getId: String = id
