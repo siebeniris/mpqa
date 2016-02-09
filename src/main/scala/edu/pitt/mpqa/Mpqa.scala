@@ -11,21 +11,32 @@ import scala.collection.JavaConversions._
   * @author Yuhuan Jiang (jyuhuan@gmail.com).
   */
 object Mpqa {
-  Gate.setPluginsHome(new File("/Applications/GATE_Developer_8.0/plugins/"))
-  Gate.setSiteConfigFile(new File("/Applications/GATE_Developer_8.0/gate.xml/"))
+
+  Gate.setPluginsHome(new File(MpqaConfig.GatePluginsHome))
+  Gate.setSiteConfigFile(new File(MpqaConfig.GateSiteConfigFile))
   Gate.init()
 
+  var allDocuments: Iterable[Document] = null
+  reload()
 
-  private val xmls = FileUtils.listFiles(new File(getClass.getResource("/gate-xmls").toURI), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).filter(_.getName == "annotatedBeforePublish.xml")
-  val documents = xmls.map(d => MpqaLoader.load(d.getAbsolutePath))
+  def reload() = {
+    val xmls = FileUtils.listFiles(new File(MpqaConfig.MpqaXmlDir), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).filter(_.getName == "annotatedBeforePublish.xml")
+    allDocuments = xmls.map(d => MpqaLoader.load(d.getAbsolutePath))
+  }
 
-  def allSentences = documents.flatMap(_.sentences)
 
-  def allSubjObjs = documents.flatMap(_.sentences).flatMap(_.subjObjs)
+
+  val documents: Map[String, Document] = allDocuments.map(d => d.name -> d).toMap
+
+  def allSentences = allDocuments.flatMap(_.sentences)
+
+  def apply(docName: String): Document = documents(docName)
+
+  def allSubjObjs = allDocuments.flatMap(_.sentences).flatMap(_.subjObjs)
 
   def allDirectSubjectives = {
     for {
-      document ← documents
+      document ← allDocuments
       sentence ← document.sentences
       subjObj ← sentence.subjObjs
       if subjObj.isInstanceOf[DirectSubjective]
@@ -34,7 +45,7 @@ object Mpqa {
 
   def allExpressiveSubjectivities = {
     for {
-      document ← documents
+      document ← allDocuments
       sentence ← document.sentences
       subjObj ← sentence.subjObjs
       if subjObj.isInstanceOf[ExpressiveSubjectivity]
@@ -43,7 +54,7 @@ object Mpqa {
 
   def allObjectiveSpeechEvents = {
     for {
-      document ← documents
+      document ← allDocuments
       sentence ← document.sentences
       subjObj ← sentence.subjObjs
       if subjObj.isInstanceOf[ObjectiveSpeech]

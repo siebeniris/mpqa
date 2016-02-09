@@ -1,6 +1,6 @@
 name := "mpqa"
 
-version := "0.1.1-SNAPSHOT"
+version := "0.1.4-SNAPSHOT"
 
 organization := "me.yuhuan"
 

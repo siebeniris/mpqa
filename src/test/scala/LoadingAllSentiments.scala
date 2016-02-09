@@ -1,4 +1,4 @@
-import edu.pitt.mpqa.Mpqa
+import edu.pitt.mpqa._
 import me.yuhuan.util.io.TextFile
 
 /**
@@ -9,7 +9,11 @@ object LoadingAllSentiments {
 
   def main(args: Array[String]) {
 
-    val x = Mpqa.allSentiments
+    MpqaConfig.GatePluginsHome = "/Applications/GATE_Developer_8.0/plugins/"
+    MpqaConfig.GateSiteConfigFile = "/Applications/GATE_Developer_8.0/gate.xml/"
+    //MpqaConfig.MpqaXmlDir = "/Users/yuhuan/Dropbox/Projects/MPQA3.0_NAACL2015/man_anns/"
+
+    val x = Mpqa.allDocuments
 
 
     val bp = 0
