@@ -12,9 +12,13 @@ class ObjectiveSpeech(var span: Span,
                       var targetFrame: TargetFrame,
                       var insubstantiality: Insubstantiality,
                       var parent: Sentence) extends SubjObj with HasTargetFrame { self =>
+
+  def sentence: Sentence = parent
+
   //region Java Getters and Setters
   def getId: String = id
   def getTargetFrame: TargetFrame = targetFrame
+  override def getSentence: Sentence = sentence
 
   def setSpan(span: Span): Unit = self.span = span
   def setId(newId: String): Unit = self.id = newId

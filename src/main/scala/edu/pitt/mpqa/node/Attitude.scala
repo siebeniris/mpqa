@@ -17,6 +17,7 @@ class Attitude(var span: Span,
                var parent: DirectSubjective) extends HasTargetFrame { self =>
 
   def spanStr: String = span.str(parent.parent.parent.text)
+  def sentence: Sentence = self.parent.parent
 
   //region Java Getters and Setters
   def getSpan: Span = span

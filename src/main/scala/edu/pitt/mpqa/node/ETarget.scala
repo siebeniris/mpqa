@@ -29,6 +29,8 @@ class ETarget(var span: Span,
     span.str(source)
   }
 
+  def sentence: Sentence = self.parents.head.sentence
+
   //region Java Getters and Setters
   def getSpan: Span = span
   def getId: String = id
@@ -36,6 +38,7 @@ class ETarget(var span: Span,
   def getIsNegated: NegatedOption = isNegated
   def getIsReferredInSpan: ReferredInSpanOption = isReferredInSpan
   def getParents: java.util.List[HasETarget] = parents.asJava
+  def getSentence: Sentence = sentence
 
   def setSpan(span: Span): Unit = self.span = span
   def setId(id: String): Unit = self.id = id

@@ -6,9 +6,12 @@ import scala.collection.JavaConverters._
   * @author Yuhuan Jiang (jyuhuan@gmail.com).
   */
 class Document(var name: String, var text: String, var agents: Seq[Agent], var sentences: Seq[Sentence]) { self =>
+  def briefText: String = if (text.length > 5) text.substring(0, 5) else text
+
   //region Java Getters and Setters
   def getName: String = name
   def getText: String = text
+  def getBriefTest: String = briefText
   def getAgents: java.util.List[Agent] = agents.asJava
   def getSentences: java.util.List[Sentence] = sentences.asJava
 

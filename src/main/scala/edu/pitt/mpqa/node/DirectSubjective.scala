@@ -17,6 +17,8 @@ class DirectSubjective(var span: Span,
                        var insubstantiality: Insubstantiality,
                        var parent: Sentence) extends SubjObj { self =>
 
+  def sentence: Sentence = self.parent
+
   //region Java Getters and Setters
   def getId: String = id
   def getAttitudes: java.util.List[Attitude] = attitudes.asJava

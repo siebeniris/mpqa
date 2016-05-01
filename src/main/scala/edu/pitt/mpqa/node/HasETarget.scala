@@ -5,4 +5,6 @@ package edu.pitt.mpqa.node
   */
 trait HasETarget {
   def eTargets: Seq[ETarget]
+  def sentence: Sentence
+  def getSentence: Sentence = sentence
 }

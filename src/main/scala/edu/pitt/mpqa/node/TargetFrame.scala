@@ -12,6 +12,8 @@ class TargetFrame(var id: String,
   def oldETargets = sTargets.flatMap(_.eTargets)
   def eTargets = oldETargets ++ newETargets
 
+  def sentence: Sentence = parent.sentence
+
   //region Java Getters and Setters
   def getId: String = id
   def getSTargets: java.util.List[STarget] = sTargets.asJava

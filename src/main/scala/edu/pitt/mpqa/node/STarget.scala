@@ -14,6 +14,8 @@ class STarget(var span: Span,
               var eTargets: Seq[ETarget],
               var parent: TargetFrame) extends HasETarget { self =>
 
+  def sentence = parent.sentence
+
   def spanStr: String = {
     val source = parent.parent match {
       case att: Attitude => att.parent.parent.parent.text

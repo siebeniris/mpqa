@@ -15,7 +15,7 @@ Simply add the following two lines to the `build.sbt` file of your project.
 
 ```sbt
 resolvers += Resolver.sonatypeRepo("snapshots")
-libraryDependencies += "me.yuhuan" %% "mpqa" % "0.0.6-SNAPSHOT"
+libraryDependencies += "me.yuhuan" %% "mpqa" % "0.1.4-SNAPSHOT"
 ```
 
 ### For Maven Users
@@ -45,7 +45,7 @@ Then, add the following lines in `<dependencies> ... </dependencies>` of your `p
     <dependency>
         <groupId> me.yuhuan </groupId>
         <artifactId> mpqa_2.11</artifactId>
-        <version> 0.0.6-SNAPSHOT </version>
+        <version> 0.1.4-SNAPSHOT </version>
     </dependency>
 ```
 

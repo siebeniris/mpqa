@@ -14,11 +14,15 @@ class ExpressiveSubjectivity(var span: Span,
                              var intensity: Intensity,
                              var insubstantiality: Insubstantiality,
                              var parent: Sentence) extends SubjObj with HasTargetFrame { self =>
+
+  def sentence: Sentence = parent
+
   //region Java Getters and Setters
   def getId: String = id
   def getTargetFrame: TargetFrame = targetFrame
   def getPolarity: Polarity = polarity
   def getIntensity: Intensity = intensity
+  override def getSentence: Sentence = sentence
 
   def setSpan(span: Span) = self.span = span
   def setId(newId: String): Unit = self.id = newId
